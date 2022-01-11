@@ -40,7 +40,9 @@ long_string = ' Long string with whitespaces '
 
 # Удалить справа
 print(long_string.rstrip())
+
 # Удалить слева
 print(long_string.lstrip())
+
 # Удалить с обоих концов
 print(long_string.strip())
