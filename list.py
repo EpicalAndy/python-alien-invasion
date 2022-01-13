@@ -73,3 +73,63 @@ print(separator)
 
 # Длинна списка
 print(f'Всего велосов: {len(bicycles)}, а бибик: {len(cars)}')
+
+print(separator)
+
+# Работа со списками
+
+# Перебор списка
+bicycles_string = ''
+
+for bike in bicycles:
+  bicycles_string += f'{bike.title()}; '
+
+print(f'Список велосов форматированный: {bicycles_string}')
+
+print(separator)
+
+# Создание числовых списков
+
+numbers = range(1, 10)
+numbers_sting = ''
+
+print(f'Range не трансформируется в последовательность чисел: {numbers}')
+print(f'Чтобы привести range к списоку нужно его прописочить через list: {list(numbers)}')
+
+for num in numbers:
+  numbers_sting += f'{num}; '
+
+print(f'Числа из range не включают последнее число: {numbers_sting}')
+
+# уквзвние шага в range
+print(f'Проба шага для range: {list(range(1, 21, 2))}')
+
+print(f'Минимум из списка {list(numbers)} = {min(list(numbers))}')
+print(f'Максимум из списка {list(numbers)} = {max(list(numbers))}')
+print(f'Сумма списка {list(numbers)} = {sum(list(numbers))}')
+
+# Создание списка через герератор
+numbers = [value**2 for value in range(1, 10)]
+
+print(f'Построение списка через генератор: {numbers}')
+
+print(separator)
+
+
+# Работа с частью списка
+
+heroes = ['batman', 'super man', 'spider man', 'super andy', 'candy candy', 'iron man']
+
+print(f'Выборка части списка: {heroes[1:4]}')
+print(f'Если не указывать начало и/или конец среза то вывод будет либо начинаться с 0-го элемента либо заканчиваться -1 элементом последователности:\n{heroes[:]}')
+print(f'Третий параметр среза отвечает за шаг выборки: {heroes[:5:2]}')
+
+# Копирование списка
+default_list = list(range(1, 20))
+
+default_list.append(1)
+
+new_list = default_list[:]
+
+print(f'Копировать список можно через срез: {new_list}')
+
