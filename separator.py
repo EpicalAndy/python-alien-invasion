@@ -1,3 +1,4 @@
-separator = '***************************'
+def print_separator():
+    separator = '***************************'
 
-print(separator)
+    print(separator)
