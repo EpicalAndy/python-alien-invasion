@@ -12,19 +12,19 @@ class Bullet(Sprite):
         self.color = self.settings.bullet_color
 
         # Создание снаряда
-        self.bullet_rect = pygame.Rect(0, 0, self.settings.bullet_width,
-                                       self.settings.bullet_height)
-        self.bullet_rect.midtop = alien_invasion_instance.ship.ship_rect.midtop
+        self.rect = pygame.Rect(0, 0, self.settings.bullet_width,
+                                self.settings.bullet_height)
+        self.rect.midtop = alien_invasion_instance.ship.ship_rect.midtop
 
         # Позиция снаряда
-        self.y = float(self.bullet_rect.y)
+        self.y = float(self.rect.y)
 
     def update(self):
         """ Перемещение снаряда """
         self.y -= self.settings.bullet_speed
-        self.bullet_rect.y = self.y
+        self.rect.y = self.y
 
     def draw_bullet(self):
         """ Отрисовка снаряда """
-        pygame.draw.rect(self.screen, self.color, self.bullet_rect)
+        pygame.draw.rect(self.screen, self.color, self.rect)
 
