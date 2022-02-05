@@ -1,4 +1,5 @@
 import sys
+from time import sleep
 
 import pygame
 
@@ -6,6 +7,7 @@ from settings import Settings
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+from game_stats import GameStats
 
 
 class AlienInvasion:
@@ -16,6 +18,7 @@ class AlienInvasion:
         self.settings = Settings()
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height))
+        self.stats = GameStats(self)
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
@@ -27,10 +30,13 @@ class AlienInvasion:
     def run_game(self):
         while True:
             self._check_events()
-            self.ship.update_ship_position()
-            self.bullets.update()
-            self._update_aliens()
-            self._update_bullets()
+
+            if self.stats.game_active:
+                self.ship.update_ship_position()
+                self.bullets.update()
+                self._update_aliens()
+                self._update_bullets()
+
             self._update_screen()
 
     def _check_events(self):
@@ -65,6 +71,11 @@ class AlienInvasion:
         self._check_fleet_edges()
         self.aliens.update()
 
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            self._ship_hit()
+
+        self._check_aliens_bottom()
+
     def _create_fleet(self):
         """ Создание флота """
         alien = Alien(self)
@@ -73,7 +84,7 @@ class AlienInvasion:
         available_space_x = self.settings.screen_width - two_alien_width
         number_aliens_x = available_space_x // two_alien_width
         # Определение количества рядов
-        ship_height = self.ship.ship_rect.height
+        ship_height = self.ship.rect.height
         available_space_y = self.settings.screen_height - (3 * alien_height) - 2 * ship_height
         number_rows = available_space_y // (2 * alien_height)
         print(f'Ships params: {number_rows}')
@@ -134,6 +145,31 @@ class AlienInvasion:
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
+
+    def _ship_hit(self):
+        """ Обработка столкновения игрока с пришельцем """
+        if self.stats.ships_left > 0:
+            self.stats.ships_left -= 1
+
+            # Удаление пришельцев и снарядов
+            self.aliens.empty()
+            self.bullets.empty()
+
+            # Создание флота и коробля игрока
+            self._create_fleet()
+            self.ship.center_ship()
+
+            # Пауза
+            sleep(1)
+
+    def _check_aliens_bottom(self):
+        """ Добрался ли пользователь до нижней части экрана """
+        screen_rect = self.screen.get_rect()
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= screen_rect.bottom:
+                # Происходит тоже что и при столкнавении с кораблём
+                self._ship_hit()
+                break
 
     def remove_bullets(self):
         for bullet in self.bullets.copy():

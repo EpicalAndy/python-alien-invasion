@@ -14,7 +14,7 @@ class Bullet(Sprite):
         # Создание снаряда
         self.rect = pygame.Rect(0, 0, self.settings.bullet_width,
                                 self.settings.bullet_height)
-        self.rect.midtop = alien_invasion_instance.ship.ship_rect.midtop
+        self.rect.midtop = alien_invasion_instance.ship.rect.midtop
 
         # Позиция снаряда
         self.y = float(self.rect.y)
